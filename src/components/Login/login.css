@@ -1,0 +1,9 @@
+.btnlog{
+    width: 242px;
+    height: 44px;
+    color: #ffffff;
+    background-color: #214a80;
+    margin-top: 10px;
+    border: 1px solid #214a80;
+    border-radius: 5px;
+}

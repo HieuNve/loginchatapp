@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App/App';
-import ChatApp from './components/chatApp/ChatApp'
+
 import reportWebVitals from './reportWebVitals';
 import 'font-awesome/css/font-awesome.min.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
