@@ -2,14 +2,28 @@ import React, {useState} from 'react';
 import "./chaApp.css"
 import axios from "axios";
 import UserTo from "./user_To";
+import BoxChat from "./boxChat";
+import user_To from "./user_To";
 
 
 var idTo;
 var ut;
+var idRoomChat;
+var d = new Date();
+var creatTime = (d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()).toString();
+console.log(creatTime)
+console.log(ut);
 
 function ChatApp() {
     const [Data, setData] = useState()
+    const [Mess, setMess] = useState()
+    const [Mess1, setMess1] = useState()
+    const [UserNameto, setUserNameto] = useState()
 
+
+    function getMess(e) {
+        setMess(e.target.value);
+    }
 
     function getValule(e) {
         setData(e.target.value);
@@ -25,17 +39,16 @@ function ChatApp() {
                 username: Data
             }
             const result = await axios.post('http://127.0.0.1:5000/find', param1);
+            console.log("aa: " + result)
             return result;
 
         }
 
         findByname().then(res => {
-            console.log(res)
             idTo = res.data.id;
             ut = res.data.user;
-            localStorage.setItem("uT", ut);
-            console.log(ut)
             roomchat()
+            setUserNameto(Data);
         });
     }
 
@@ -53,7 +66,29 @@ function ChatApp() {
         }
 
         insertRoom().then(res => {
-            console.log(res)
+            console.log("id: " + res.data);
+            idRoomChat = res.data
+            console.log("id r: " + idRoomChat);
+
+        });
+    }
+
+    function CreateChat() {
+        let idFrom = localStorage.getItem("iduser");
+        const insertMess = async () => {
+            const par = {
+                chat_room_id: idRoomChat,
+                user_from: idFrom,
+                message: Mess,
+                create_time: (d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()).toString()
+            }
+            const result = await axios.post("http://127.0.0.1:5000/mess", par)
+            return result
+        }
+
+        insertMess().then(res => {
+            console.log(res);
+            setMess1(Mess)
         });
     }
 
@@ -76,21 +111,18 @@ function ChatApp() {
                         </form>
                     </div>
                     <div className="col-4">
-                        <UserTo name={ut}/>
+                        <UserTo name={UserNameto}/>
                     </div>
-                    <div className="col-6"><i className="fa fa-user"/>{ut}<br/>
+                    <div className="col-6"><i className="fa fa-user"/>{UserNameto}<br/>
                         <div className="boxchat">
-                            <div className="receive">
-                                <p><i className="fa fa-user"/> ádasdasdasd</p>
-                            </div>
+                            <BoxChat mesSend={Mess1} mesReceive={"alo alo 1234"}/>
                             <br/><br/>
-                            <div className="send">
-                                <p>ádasdsadsad</p>
-                            </div>
                             <div className="ipChat">
                                 <form action>
-                                    <input className="inbox" type="text"/>
-                                    <i className="fa fa-paper-plane"/>
+                                    <input className="inbox" type="text" id={"ipMess"} onChange={getMess}/>
+                                    <i className="fa fa-paper-plane" onClick={() => {
+                                        CreateChat();
+                                    }}/>
                                 </form>
                             </div>
                         </div>

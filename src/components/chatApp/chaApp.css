@@ -93,7 +93,7 @@ body{
 }
 .ipChat>form>.inbox{
     margin: 10px;
-    width: auto;
+    width: 400px;
     height: 40px;
     border-radius: 10px;
 }
